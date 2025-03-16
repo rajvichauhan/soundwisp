@@ -1,0 +1,41 @@
+<html>
+<body>
+    <script>
+    const clientId = "784efea53b8a492f8964659f5251a9aa";
+    const redirectUri = "http://localhost:5500/callback.html";
+    const clientSecret = "cebc1051803a475a8cb89b6795ff41ac";  
+
+    const authCode = new URLSearchParams(window.location.search).get("code");
+
+    if (authCode) {
+        fetch("https://accounts.spotify.com/api/token", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": "Basic " + btoa(clientId + ":" + clientSecret),  
+             },
+            body: new URLSearchParams({
+                grant_type: "authorization_code",
+                code: authCode,
+                redirect_uri: redirectUri,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.access_token) {
+                localStorage.setItem("spotify_access_token", data.access_token);
+                console.log('Access token saved.');
+                console.log("Stored prevPage BEFORE redirecting:", localStorage.getItem("prevPage"));
+
+                const prevPage = localStorage.getItem("prevPage") 
+                window.location.href = prevPage;
+                console.log(prevPage);
+   } else {
+                console.error('Error retrieving access token:', data);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    </script>
+</body>
+</html>

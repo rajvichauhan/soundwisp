@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <title>Music Player</title>
+    <style>
+        body {
+            background-color: rgb(0, 0, 0);
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto';
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            padding-bottom: 65px;
+            /* Space for the bottom panel */
+            box-sizing: border-box;
+        }
+
+        /* Left Panel */
+        #left-panel {
+            background-color: #121212;
+            flex: 1;
+            margin: 4px;
+            margin-top: 10px;
+            border-radius: 10px;
+            color: white;
+            padding: 10px;
+        }
+
+        #left-panel #soundwisp-logo {
+            width: 130px;
+            margin-bottom: 20px;
+        }
+
+        .menu-button {
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            background-color: #121212;
+            color: white;
+            padding: 2px 5px;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            height: 50px;
+            margin-top: -5px;
+        }
+
+        .menu-button i {
+            margin-right: 10px;
+            color: white;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        .playlist-container {
+            display: flex;
+            padding: 4px;
+            border-radius: 8px;
+            margin-top: 5px;
+            background-color: #121212 !important;
+            border: none;
+            color: white;
+            width: 250px;
+        }
+
+        .playlist-container:hover {
+            background-color: #333 !important;
+        }
+
+        .playlist-container h5 {
+            padding-top: 11px;
+        }
+
+        /* Left Panel finish
+Middle app start */
+        #middle-app {
+            background-color: #121212;
+            flex: 4;
+            margin: 4px;
+            margin-top: 10px;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+
+        .playlist-item {
+            background-color: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+
+        /* Bottom Player */
+        #song-playing-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #000000;
+            text-align: center;
+            color: white;
+            line-height: 60px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .search-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .search-bar {
+            width: 80%;
+            padding: 10px 40px 10px 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 35px;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 230px;
+            top: 50%;
+            transform: translateY(-60%);
+            color: gray;
+            pointer-events: none;
+        }
+
+        .card {
+            height: 212px;
+            width: 212px;
+            border: none;
+            margin-top: 30px;
+            border-radius: 5%;
+        }
+
+        .card:first-child {
+            margin-left: 2px;
+        }
+
+        .card img {
+            border-radius: 5%;
+        }
+
+        .card img:hover {
+            transform: scale(1.1);
+        }
+
+        .albums-cards {
+            display: flex;
+            gap: 12px;
+
+        }
+
+        #song-playing-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 67px;
+            background-color: #000000;
+            text-align: center;
+            color: white;
+            line-height: 60px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+
+        #left-panel::-webkit-scrollbar {
+            width: 8px;
+            /* Width of the scrollbar */
+        }
+
+        #middle-part::-webkit-scrollbar {
+            width: 6px;
+            /* Width of the scrollbar */
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 400px;
+            margin-right: -12%;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: lightgray;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #progress {
+            height: 100%;
+            width: 0%;
+            background: green;
+            transition: width 0.5s linear;
+        }
+
+        #profile {
+            margin-left: 10px;
+            background-color: white;
+            border-radius: 30px;
+            width: 170px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #profile img {
+            margin-top: 2px;
+        }
+        .liked-songs{
+            height: 300px;
+            width: 460px;
+            border-radius: 10px;
+            margin-top: 20px;
+            background-image: linear-gradient(#564be6, #898bdf);
+        }
+        .liked-songs:hover{
+            scale: 1.03;
+            transition: ease 0.5s;
+        }
+        .playlist-card{
+            height: 300px;
+            width: 220px;
+            background-color: #48474781;
+            opacity: 0.7;
+            display: inline;
+            margin-left: 25px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+       
+        .playlist-card img{
+            height: 190px;
+            width: 190px;
+            margin: 15px;
+            border-radius: 5px;
+        }
+        
+        .playlist-card:hover{
+            scale: 1.02;
+            transition: ease 0.5s;
+        }
+    </style>
+    <script>
+        function navigateToPage(pagename) {
+            window.location.href = pagename;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- left panel -->
+        <div id="left-panel">
+            <div class="logo-panel">
+                <img src="soundwisp white.png" id="soundwisp-logo">
+            </div>
+            <button class="menu-button" id="child-1" onclick="navigateToPage('index.html')">
+                <i class="fas fa-home fa-lg"></i>
+                <h5>Home</h5>
+            </button>
+            <button class="menu-button" onclick="navigateToPage('search.html')">
+                <i class="fas fa-search fa-lg"></i>
+                <h5>Search</h5>
+            </button>
+            <button class="menu-button" style="padding-left: 15px; margin-bottom: 15px;"
+                onclick="navigateToPage('library.html')">
+                <img src="library.png" alt="library" style="height: 25px; margin-bottom: 10px;">
+                <h5>&nbsp;&nbsp;Your Library</h5>
+            </button>
+            <h5 style="color: #cccccc57; padding-left: 13px;">YOUR PLAYLISTS</h5>
+            <!-- PLAYLISTS -->
+            <div id="playlist-part">
+                <button class="playlist-container" onclick="navigateToPage('liked-songs.html')">
+                    <img src="liked-song.jpg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;Liked Songs</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('chai-met-toast.html')">
+                    <img src="chai meets toast.jpg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;This is When Chai..</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('late-night.html')">
+                    <img src="late.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;late night</h5>
+                </button>
+                
+                <button class="playlist-container" onclick="navigateToPage('smooth.html')">
+                    <img src="smooth.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;smooth</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('wallowing.html')">
+                    <img src="wallowing.jpg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;wallowing</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('Evergreen.html')">
+                    <img src="evergreen.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;Evergreen</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('stress-relief.html')" style="margin-bottom: 40px;">
+                    <img src="stress.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;Stress Relief</h5>
+                </button>
+            </div>
+        
+        </div>
+
+        <!-- Middle Panel -->
+        <div id="middle-app">
+            <!-- Search Bar -->
+            <div class="search-container" style="display: inline-flex;">
+                <i class="fas fa-search search-icon "></i>
+                <input type="text" class="search-bar" placeholder="What do you want to listen to?">
+                <div id="profile">
+                    <img src="./pfp.jpeg" style="height: 40px; width: 40px; border-radius: 40px; margin-left: 7px;">
+                    <div style="color: #000000; font-size: 20px;">rajvii</div>
+                </div>
+            </div>
+            <div class="main-body" style="display:flex;">
+                <div class="liked-songs" onclick="navigateToPage('liked-songs.html')">
+                    <h1 style="color: white; font-size: 42px; font-weight: normal; opacity: 0.7; padding-top: 200px;padding-left: 30px; margin-bottom: 0;">Liked Songs</h1>
+                    <h1 style="color: white; font-size: 19px; font-weight: normal; opacity: 0.7; padding-bottom:20px;padding-left: 30px;">All your liked songs. Now in one place.</h1>
+                </div>
+                <div class="playlist-card" onclick="navigateToPage('smooth.html')">
+                    <img src="smooth.jpeg">
+                    <h5 style="margin-left: 15px; font-size: 25px;">smooth</h5>
+                    <p style="margin-left: 15px;">6 Saves • 58 songs </p>
+                </div>
+                <div class="playlist-card" style="margin-left: 15px;" onclick="navigateToPage('late-night.html')">
+                    <img src="late.jpeg">
+                    <h5 style="margin-left: 15px; font-size: 25px;">Late Night Vibes</h5>
+                    <p style="margin-left: 15px;">27 Saves • 75 songs </p>
+                </div>
+            </div>
+                <div class="line-2" style="display: flex;">
+                    <div class="playlist-card" style="margin-left: 0px;" onclick="navigateToPage('chai-met-toast.html')">
+                        <img src="chai meets toast.jpg">
+                        <h5 style="margin-left: 15px; font-size: 25px;">This is When...</h5>
+                        <p style="margin-left: 15px;">96 Saves • 40 songs </p>
+                    </div>
+                    <div class="playlist-card" style="margin-left: 15px;" onclick="navigateToPage('wallowing.html')">
+                        <img src="wallowing.jpg">
+                        <h5 style="margin-left: 15px; font-size: 25px;">wallowing</h5>
+                        <p style="margin-left: 15px;">2 Saves • 55 songs </p>
+                    </div>
+                
+                    <div class="playlist-card" onclick="navigateToPage('stress-relief.html')">
+                        <img src="stress.jpeg">
+                        <h5 style="margin-left: 15px; font-size: 25px;">Stress Relief</h5>
+                        <p style="margin-left: 15px;">6 Saves • 58 songs </p>
+                    </div>
+                    <div class="playlist-card" style="margin-left: 15px;" onclick="navigateToPage('evergreen.html')">
+                        <img src="evergreen.jpeg">
+                        <h5 style="margin-left: 15px; font-size: 25px;">Evergreen</h5>
+                        <p style="margin-left: 15px;">2 Saves • 15 songs </p>
+                    </div>
+                
+            </div>
+        </div>
+
+        <div id="song-playing-panel" style="display: inline-flex;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="./empty-song.jpeg" alt="Album Cover" id="song-cover-photo"
+                    style="height: 50px; width: 50px; border-radius: 5px; margin-left: 17px;">
+                <div style="padding-top:50px;">
+                    <h6 style="margin-top:-25px; font-size: 17px; font-weight:light;text-align:left;" id="song-name">
+                        Song
+                    </h6>
+                    <div id="artist-name"
+                        style="font-size: 14px; color: gray; margin-top:-25px; margin-left:0; font-weight:500; text-align:left;">
+                        Artist Name
+                    </div>
+                </div>
+                <div class="progress-container"
+                    style="margin-left:230px; font-weight:500; color:gray; display: flex; flex-direction:column;">
+                    <div style="display: flex; gap: 10px; align-items: center;" id="button-line">
+                        <i class="fas fa-step-backward"
+                            style="padding:10px; margin-top:30px;margin-left:3px; border-radius:50%; display:flex; justify-content:center;"></i>
+                        <i class="fas fa-pause pause-btn" onclick="pauseTrack()" id="playPauseBtn"
+                            style="padding:10px; margin-top:30px;margin-left:10px; color:black; background-color: white; border-radius:50%; width:35px;height:35px; display:flex; justify-content:center; cursor: pointer;"></i>
+                        <i class="fas fa-step-forward"
+                            style="padding:10px; margin-top:30px;margin-left:3px; border-radius:50%; display:flex; justify-content:center;"></i>
+                    </div>
+
+                    <div style="display: flex; align-items: center; margin-top:-30px; margin-bottom: 10px;"
+                        id="play-line">
+                        <span id="current-time">0:00</span>&nbsp;&nbsp;&nbsp;
+                        <div class="progress-bar"
+                            style="background-color:gray; width:350px; height:6px; display:flex; overflow:hidden;">
+                            <div id="progress" style="background-color:white; width: 0%; transition: ease"></div>
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <span id="total-time">0:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+</body>
+
+</html>

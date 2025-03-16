@@ -1,0 +1,579 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <title>smooth</title>
+    <style>
+        body {
+            background-color: rgb(0, 0, 0);
+            display: flex;
+            height: 98vh;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto';
+            overflow: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            padding-bottom: 65px;
+            box-sizing: border-box;
+        }
+
+        #left-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            flex: 1;
+            width: 250px;
+            height: 97vh;
+            background-color: #121212;
+            padding: 10px;
+            color: white;
+            overflow-y: auto;
+            margin: 4px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        #left-panel #soundwisp-logo {
+            width: 130px;
+            margin-bottom: 20px;
+        }
+
+        .menu-button {
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            background-color: #121212;
+            color: white;
+            padding: 2px 5px;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            height: 50px;
+            margin-top: -5px;
+        }
+
+        .menu-button i {
+            margin-right: 10px;
+            color: white;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        #middle-app {
+            flex: 4;
+            margin-left: 260px;
+            height: 97vh;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow-y: auto;
+            color: white;
+            background: linear-gradient(to bottom, #75858c82, #121212);
+            padding: 20px;
+            position: relative;
+            padding: 20px;
+        }
+
+        .playlist-container {
+            display: flex;
+            padding: 4px;
+            border-radius: 8px;
+            margin-top: 5px;
+            background-color: #121212 !important;
+            border: none;
+            color: white;
+            width: 235px;
+        }
+
+        .playlist-container:hover {
+            background-color: #333 !important;
+        }
+
+        .playlist-container h5 {
+            padding-top: 11px;
+        }
+
+        #header {
+            display: flex;
+            align-items: last baseline;
+            /* Vertically align the items */
+            justify-content: flex-start;
+            /* Horizontally align the items */
+            gap: 10px;
+            /* Space between the image and the text */
+        }
+
+        #header #content-header {
+            display: flex;
+            flex-direction: column;
+            /* Stack the text vertically */
+        }
+
+        #play-button {
+            background-color: #75858c;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            color: #d3dee1;
+        }
+
+        #play-button i {
+            margin-left: 21px;
+            margin-top: 13px;
+        }
+
+        #play-button:hover {
+            transition: transform 0.3s ease;
+            transform: scale(1.1);
+        }
+
+        .playlist-item {
+            display: inline-flex;
+            margin-bottom: 7px;
+            align-items: center;
+            width: 100%;
+            padding: 5px;
+        }
+
+        .playlist-item:hover {
+            background-color: #3333333f;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .play-btn {
+            visibility: hidden;
+        }
+
+        .playlist-item:hover .track-index {
+            visibility: hidden;
+            /* Hide track index on hover */
+        }
+
+        .playlist-item:hover .play-btn {
+            visibility: visible;
+            cursor: pointer;
+            /* Show play button on hover */
+        }
+
+        .track-index {
+            visibility: visible;
+        }
+
+        #song-playing-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 98.5%;
+            height: 67px;
+            background-color: #000000;
+            text-align: center;
+            color: white;
+            line-height: 60px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+
+        #left-panel::-webkit-scrollbar {
+            width: 8px;
+            /* Width of the scrollbar */
+        }
+
+        #middle-part::-webkit-scrollbar {
+            width: 6px;
+            /* Width of the scrollbar */
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 400px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: lightgray;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #progress {
+            height: 100%;
+            width: 0%;
+            background: green;
+            transition: width 0.5s linear;
+        }
+    </style>
+    <script>
+        function navigateToPage(pagename) {
+            window.location.href = pagename;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="main-container">
+        <div id="left-panel">
+            <div class="logo-panel">
+                <img src="soundwisp white.png" id="soundwisp-logo">
+            </div>
+
+            <button class="menu-button" id="child-1" onclick="navigateToPage('index.html')">
+                <i class="fas fa-home fa-lg"></i>
+                <h5>Home</h5>
+            </button>
+            <button class="menu-button" onclick="navigateToPage('search.html')">
+                <i class="fas fa-search fa-lg"></i>
+                <h5>Search</h5>
+            </button>
+            <button class="menu-button" style="padding-left: 15px; margin-bottom: 15px;"
+                onclick="navigateToPage('library.html')">
+                <img src="library.png" alt="library" style="height: 25px; margin-bottom: 10px;">
+                <h5>&nbsp;&nbsp;Your Library</h5>
+            </button>
+            <h5 style="color: #cccccc57; padding-left: 13px;">YOUR PLAYLISTS</h5>
+            <!-- PLAYLISTS -->
+            <div id="playlist-part">
+                <button class="playlist-container" onclick="navigateToPage('liked-songs.html')">
+                    <img src="liked-song.jpg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;Liked Songs</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('chai-met-toast.html')">
+                    <img src="chai meets toast.jpg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;This is When Chai..</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('late-night.html')">
+                    <img src="late.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;late night</h5>
+                </button>
+                
+                <button class="playlist-container" onclick="navigateToPage('smooth.html')">
+                    <img src="smooth.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;smooth</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('wallowing.html')">
+                    <img src="wallowing.jpg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;wallowing</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('Evergreen.html')">
+                    <img src="evergreen.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;Evergreen</h5>
+                </button>
+                <button class="playlist-container" onclick="navigateToPage('stress-relief.html')" style="margin-bottom: 40px;">
+                    <img src="stress.jpeg" style="height: 45px; width: 45px; border-radius: 8px;">
+                    <h5 style="font-size: 18px;">&nbsp;&nbsp;Stress Relief</h5>
+                </button>
+            </div>
+        </div>
+        <div id="middle-app">
+            <div id="header">
+                <img src="./chai meets toast.jpg" style="height: 225px; width: 225px;">
+                <div id="content-header">
+                    <h5>PUBLIC PLAYLIST</h5><br>
+                    <h1>When Chai Met Toast</h1>
+                    <p style="color: rgba(255, 255, 255, 0.717);">
+                        6 Saves • 58 songs • 3hr 34 mins
+                    </p>
+                </div>
+            </div>
+            <hr style="height: 5px;">
+            <div id="play-button">
+                <i class="fas fa-play fa-2x" onclick="playFirst()"></i>
+            </div>
+            <br>
+            <!-- table header -->
+            <div id="line" style="color:  rgba(255, 255, 255, 0.717);">
+                #
+                <span style="margin-left: 20px;">Title</span>
+                <span style="margin-left: 240px;"> Album</span>
+                <span style="margin-left: 300px;">Date added </span>
+            </div>
+            <hr>
+            <div id="playlist-songs">
+                <!--section where songs would be rendered-->
+                <img src="./empty-song.jpeg" style="height: 25px; width: 25px; margin-left: 20px;" id="empty-photo">
+            </div>
+        </div>
+        </div>
+        <!-- song playing panel -->
+    <div id="song-playing-panel" style="display: inline-flex;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="./empty-song.jpeg" alt="Album Cover" id="song-cover-photo" style="height: 50px; width: 50px; border-radius: 5px; margin-left: 17px;">
+            <div style="padding-top:50px;">
+                <h6 style="margin-top:-25px; font-size: 17px; font-weight:light;text-align:left;" id="song-name">Song </h6>
+                <div id="artist-name" style="font-size: 14px; color: gray; margin-top:-25px; margin-left:0; font-weight:500; text-align:left;">
+                   Artist Name
+                </div>
+            </div>
+            <div class="progress-container" style="margin-left:230px; font-weight:500; color:gray; display: flex; flex-direction:column;">
+                <div style="display: flex; gap: 10px; align-items: center;" id="button-line">
+                    <i class="fas fa-step-backward" style="padding:10px; margin-top:30px;margin-left:3px; border-radius:50%; display:flex; justify-content:center;"></i>
+                    <i class="fas fa-pause pause-btn" onclick="pauseTrack()" id="playPauseBtn" style="padding:10px; margin-top:30px;margin-left:10px; color:black; background-color: white; border-radius:50%; width:35px;height:35px; display:flex; justify-content:center; cursor: pointer;"></i>
+                    <i class="fas fa-step-forward" style="padding:10px; margin-top:30px;margin-left:3px; border-radius:50%; display:flex; justify-content:center;"></i>
+                </div>
+      
+                <div style="display: flex; align-items: center; margin-top:-30px; margin-bottom: 10px;" id="play-line">
+                    <span id="current-time">0:00</span>&nbsp;&nbsp;&nbsp;
+                    <div class="progress-bar" style="background-color:gray; width:350px; height:6px; display:flex; overflow:hidden;">
+                        <div id="progress" style="background-color:white; width: 0%; transition: ease"></div>
+                    </div>&nbsp;&nbsp;&nbsp;
+                    <span id="total-time">0:00</span>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+
+</body>
+<script>
+//https://open.spotify.com/playlist/0I4yWS5ZHaEWPo0xcUWqke?si=9591db979f1043ea
+const clientId = "784efea53b8a492f8964659f5251a9aa";
+    const clientSecret = "cebc1051803a475a8cb89b6795ff41ac";
+    const playlistId = "0I4yWS5ZHaEWPo0xcUWqke";
+    const scope = encodeURIComponent("user-library-read user-read-private playlist-read-private streaming user-modify-playback-state user-read-playback-state");
+    const redirectUri = "http://localhost:5500/callback.html";
+    let progressInterval;
+
+    async function fetchPlaylist() { //fetching playlist and rendering songs in fetchPlaylist method
+    const accessToken = getStoredAccessToken();//verifying access token from spotify
+    if (!accessToken) {
+        divi = document.getElementById("playlist-songs");
+        divi.innerHTML = `<button style="color:#ffffff; background: none; border: none; text-decoration: underline;" onclick='loginWithSpotify()'>Login with Spotify</button>`;
+    }
+    else {
+        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {//calling spotify api
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (!response.ok) {
+            alert('Error fetching playlist!');
+        }
+        else {
+            //if calling api is success
+            const data = await response.json();
+            const playlistContainer = document.getElementById("playlist-songs");//make containers for each songs in playlist-songs
+            playlistContainer.innerHTML = "";
+            const item1 = data.tracks.items[0];  // Get the first song
+            const track1 = item1.track;
+            const trackUri1 = track1.uri;
+            localStorage.setItem("trackUri1", trackUri1);
+            localStorage.setItem("track1", JSON.stringify(track1));
+
+            function truncateText(text, maxLength = 15) {
+                return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+            }
+
+            data.tracks.items.forEach((item, index) => {//mapping for each item
+                const track = item.track;
+                const trackUri = track.uri;
+                const addedAt = new Date(item.added_at).toDateString(); 
+                const div = document.createElement("div");
+                const durationMs = track.duration_ms;
+                div.classList.add("playlist-item");
+
+                div.innerHTML = `<span class="track-index">${index + 1}</span>
+                <i class="fas fa-play play-btn" style="padding:10px;margin-left:-17px"></i>
+                <img src="${track.album.images[0]?.url || './empty-song.jpeg'}" style="height: 40px; width: 40px; border-radius:5px; margin: 0 10px;">
+                <div>
+                    <strong>${truncateText(track.name)}</strong>
+                    <div style="font-size: 14px; color: gray;">${truncateText(track.artists.map(artist => artist.name).join(", "))}</div>
+                </div>
+                <span style="position:absolute; margin-left:310px">${truncateText(track.album.name)}</span>
+                <span style="position:absolute; margin-left:650px">${addedAt}</span>`;
+
+                div.querySelector('.play-btn').addEventListener("click", function () {
+                    playTrack(trackUri, track); 
+                });
+
+                playlistContainer.appendChild(div);
+            });
+        }
+    }
+}
+fetchPlaylist();
+
+    function getStoredAccessToken() {
+        return localStorage.getItem("spotify_access_token");
+    }
+
+    function loginWithSpotify() {
+        const currentUrl = "http://localhost:5500/smooth.html";
+        console.log(localStorage.getItem("prevPage"));
+        localStorage.setItem("prevPage", currentUrl);  // Store it in localStorage
+        const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+        window.location.href = authUrl;
+    }
+
+    function startProgressBar(durationMs) {
+        clearInterval(progressInterval);
+        let elapsedTime = 0;
+        const progressBar = document.getElementById("progress");
+        const currentTimeDisplay = document.getElementById("current-time");
+        const totalTimeDisplay = document.getElementById("total-time");
+
+        const total = formatTime(durationMs / 1000); 
+        totalTimeDisplay.innerHTML = total;
+
+        console.log("Total:", total);
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+        }
+
+        progressInterval = setInterval(() => {
+            if (elapsedTime >= durationMs / 1000) {
+                clearInterval(progressInterval);  // Stop when song ends
+                return;
+            }
+            elapsedTime++;
+            progressBar.style.width = `${(elapsedTime / (durationMs / 1000)) * 100}%`;
+            currentTimeDisplay.textContent = formatTime(elapsedTime);
+        }, 1000);
+    }
+
+async function playFirst() {
+    const track1 = JSON.parse(localStorage.getItem("track1"));    
+    trackUri1=localStorage.getItem("trackUri1");
+    const accessToken = getStoredAccessToken();
+    if (!accessToken) {
+        alert("There is some error with the access token");
+        return;
+    }
+    const response = await fetch("https://api.spotify.com/v1/me/player/play", {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ "uris": [trackUri1] })
+    });
+
+    if (response.status === 204) {
+        console.log("Playback started!");
+        document.getElementById('playPauseBtn').className="fas fa-pause";
+
+        const ima = document.getElementById("panel-img");
+        if (ima && track1.album?.images?.length > 0) {
+            ima.src = track1.album.images[0].url;
+        } else {
+            console.error("No album image available");
+        }
+
+        const durationMs = track1?.duration_ms;
+        console.log("duration = ", durationMs);
+
+        document.getElementById('song-cover-photo').src = track1.album.images[0]?.url || './empty-song.jpeg';
+        document.getElementById('song-name').innerHTML=track1.name;
+        document.getElementById('artist-name').innerHTML=track1.artists.map(artist => artist.name);
+        
+
+        // Start progress bar
+        startProgressBar(durationMs);
+    } else {
+        console.error("Error starting playback:", await response.json());
+    }
+}
+
+
+async function playTrack(trackUri, track) {
+    const accessToken = getStoredAccessToken();
+    if (!accessToken) {
+        alert("There is some error with the access token");
+        return;
+    }
+    const response = await fetch("https://api.spotify.com/v1/me/player/play", {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ "uris": [trackUri] })
+    });
+
+    if (response.status === 204) {
+        console.log("Playback started!");
+
+        const ima = document.getElementById("panel-img");
+        if (ima && track.album?.images?.length > 0) {
+            ima.src = track.album.images[0].url;
+        } else {
+            console.error("No album image available");
+        }
+
+        const durationMs = track?.duration_ms;
+        console.log("duration = ", durationMs);
+
+        document.getElementById('song-cover-photo').src = track.album.images[0]?.url || './empty-song.jpeg';
+        document.getElementById('song-name').innerHTML=track.name;
+        document.getElementById('artist-name').innerHTML=track.artists.map(artist => artist.name);
+        try{
+        document.getElementById('playPauseBtn').className="fas fa-pause";
+        console.log('goes in')
+        }
+        catch(error){
+            console.log(error)
+        }
+        startProgressBar(durationMs);
+
+    } else {
+        console.error("Error starting playback:", await response.json());
+    }
+}
+async function pauseTrack() {
+    const accessToken = getStoredAccessToken();
+    if (!accessToken) {
+        alert("Access token error. Please log in again.");
+        return;
+    }
+
+    try {
+        const response = await fetch("https://api.spotify.com/v1/me/player/pause", {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+        console.log("Response status:", response.status); // Print status code
+        if (response.status === 200) {
+            console.log("Playback paused successfully!");
+            document.getElementById('playPauseBtn').className="fas fa-play";
+            const currentTimeDisplay = document.getElementById("current-time");
+            clearInterval(progressInterval);
+            
+            } else {
+            const errorText = await response.text();
+            console.error(`Error ${response.status}: ${errorText}`);
+        }
+    } catch (error) {
+        console.error("Network or API error:", error);
+    }
+}
+
+</script>
+
+</html>
