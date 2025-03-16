@@ -1,4 +1,4 @@
-## Music Player Web App 🎵  
+SoundWisp 🎵  
 
 A sleek and responsive music player built using **HTML, CSS, JavaScript**, and **Bootstrap**, with seamless integration of the **Spotify Web API**. This project allows users to browse, play, and manage music efficiently.  
 
